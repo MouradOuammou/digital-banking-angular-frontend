@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {catchError, Observable, throwError} from 'rxjs';
+import {catchError, map, Observable, throwError} from 'rxjs';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {Router} from 'express';
+import {CustomerService} from '../service/customer.service';
+import {Customer} from '../model/customer.model';
 
 @Component({
   selector: 'app-customers',
