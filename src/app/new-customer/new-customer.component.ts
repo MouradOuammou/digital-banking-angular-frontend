@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {Customer} from "../model/customer.model";
-import {CustomerService} from "../service/customer.service";
+import {Customer} from "../../model/customer.model";
+import {CustomerService} from "../../service/customer.service";
 import {Router} from "@angular/router";
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-new-customer',
   templateUrl: './new-customer.component.html',
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonModule
   ],
   styleUrls: ['./new-customer.component.css']
 })

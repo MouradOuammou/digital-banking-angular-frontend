@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {Customer} from "../model/customer.model";
+import {Customer} from "../../model/customer.model";
 import {JsonPipe} from '@angular/common';
 
 @Component({

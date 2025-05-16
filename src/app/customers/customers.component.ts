@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import {catchError, map, Observable, of, throwError} from 'rxjs';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CustomerService } from '../service/customer.service';
-import { Customer } from '../model/customer.model';
+import { CustomerService } from '../../service/customer.service';
+import { Customer } from '../../model/customer.model';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-customers',
@@ -12,7 +14,8 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    HttpClientModule
   ],
   styleUrls: ['./customers.component.css']
 })
@@ -40,7 +43,7 @@ export class CustomersComponent implements OnInit {
     this.customers$ = this.customerService.searchCustomers(kw).pipe(
       catchError(err => {
         this.errorMessage = err.message;
-        return throwError(() => err);
+        return of([]);
       })
     );
   }
