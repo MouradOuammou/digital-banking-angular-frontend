@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import { Router } from '@angular/router';
 import { CustomerService } from '../../service/customer.service';
 import { Customer } from '../../model/customer.model';
-import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
+import {AsyncPipe, DatePipe, NgForOf, NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-customers',
@@ -13,7 +13,8 @@ import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
     ReactiveFormsModule,
     NgIf,
     AsyncPipe,
-    NgForOf
+    NgForOf,
+    DatePipe
   ],
   styleUrls: ['./customers.component.css']
 })
@@ -83,5 +84,8 @@ export class CustomersComponent implements OnInit {
 
   trackByCustomerId(_index: number , customer: Customer): number {
     return customer.id;
+  }
+  refresh() {
+    this.handleSearchCustomers();
   }
 }
