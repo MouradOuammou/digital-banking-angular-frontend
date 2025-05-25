@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { AuthService } from '../../service/auth.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +30,7 @@ export class LoginComponent {
   ) {
     this.loginForm = this.fb.group({
       username: ['', {
-        validators: [Validators.required, Validators.minLength(3  )],
+        validators: [Validators.required, Validators.minLength(3)],
         updateOn: 'blur'
       }],
       password: ['', {
@@ -48,27 +49,29 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    if (this.loginForm.valid) {
-      this.isLoading = true;
-      this.errorMessage = null;
+    if (!this.loginForm.valid) {
+      this.errorMessage = 'Veuillez remplir tous les champs correctement.';
+      return;
+    }
 
-      const { username, password } = this.loginForm.value;
-      console.log("test");
+    this.isLoading = true;
+    this.errorMessage = null;
 
-      this.authService.login(username, password).subscribe({
-        next: (response) => {
-          // Gérer la réponse de connexion réussie
+    const { username, password } = this.loginForm.value;
+    console.log('Tentative de connexion avec', username);
+
+    this.authService.login(username, password)
+      .pipe(finalize(() => this.isLoading = false))
+      .subscribe({
+        next: (response: any) => {
+          // Stocker le token dans le localStorage
+          localStorage.setItem('token', response);
           this.router.navigate(['/customers']);
         },
         error: (error) => {
+          console.error('Erreur lors de la connexion:', error);
           this.errorMessage = 'Identifiants incorrects';
-          this.isLoading = false;
-        },
-        complete: () => {
-          this.isLoading = false;
         }
       });
-    }
   }
-
 }
