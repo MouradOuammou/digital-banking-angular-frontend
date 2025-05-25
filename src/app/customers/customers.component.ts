@@ -48,22 +48,43 @@ export class CustomersComponent implements OnInit {
     );
   }
 
+  handleClearSearch() {
+    this.searchFormGroup.reset();
+    this.handleSearchCustomers();
+  }
+
+  handleNewCustomer() {
+    this.router.navigateByUrl("/new-customer");
+  }
+
+  handleEditCustomer(customer: Customer) {
+    this.router.navigateByUrl("/edit-customer/" + customer.id);
+  }
+
   handleDeleteCustomer(c: Customer) {
-    let conf = confirm("Are you sure?");
+    let conf = confirm(`Êtes-vous sûr de vouloir supprimer le client "${c.name}" ?`);
     if (!conf) return;
 
     this.customerService.deleteCustomer(c.id).subscribe({
       next: () => {
         this.customers$ = this.customers$.pipe(
-          map(data => data.filter(cust => cust.id !== c.id)))
+          map(data => data.filter(cust => cust.id !== c.id))
+        );
+        alert('Client supprimé avec succès');
       },
       error: err => {
         console.log(err);
+        alert('Erreur lors de la suppression du client');
       }
     });
   }
 
   handleCustomerAccounts(customer: Customer) {
     this.router.navigateByUrl("/customer-accounts/" + customer.id, { state: customer });
+  }
+
+  // Optimisation pour le trackBy
+  trackByCustomerId(index: number, customer: Customer): number {
+    return customer.id;
   }
 }

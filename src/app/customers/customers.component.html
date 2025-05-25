@@ -1,43 +1,72 @@
 <div class="container mt-2">
   <ng-container *ngIf="customers$ | async as listCustomers; else failureOrLoading">
     <div class="card">
-      <div class="card-header">Customers</div>
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span>Gestion des Clients</span>
+        <button class="btn btn-primary" (click)="handleNewCustomer()">
+          <i class="bi bi-plus-lg"></i> Nouveau Client
+        </button>
+      </div>
       <div class="card-body">
+        <!-- Formulaire de recherche -->
         <form [formGroup]="searchFormGroup" (ngSubmit)="handleSearchCustomers()">
-          <div class="input-group">
-            <label class="input-group-text">Keyword :</label>
-            <input type="text" formControlName="keyword" class="form-control">
+          <div class="input-group mb-3">
+            <label class="input-group-text">Rechercher :</label>
+            <input type="text" formControlName="keyword" class="form-control" placeholder="Nom ou email...">
             <button class="btn btn-info" type="submit">
-              <i class="bi bi-search"></i> Search
+              <i class="bi bi-search"></i> Chercher
+            </button>
+            <button class="btn btn-secondary" type="button" (click)="handleClearSearch()">
+              <i class="bi bi-x-lg"></i> Effacer
             </button>
           </div>
         </form>
 
-        <table class="table mt-3">
-          <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Actions</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let c of listCustomers">
-            <td>{{c.id}}</td>
-            <td>{{c.name}}</td>
-            <td>{{c.email}}</td>
-            <td class="d-flex gap-2">
-              <button (click)="handleDeleteCustomer(c)" class="btn btn-danger btn-sm">
-                <i class="bi bi-trash"></i> Delete
-              </button>
-              <button (click)="handleCustomerAccounts(c)" class="btn btn-success btn-sm">
-                <i class="bi bi-bank"></i> Accounts
-              </button>
-            </td>
-          </tr>
-          </tbody>
-        </table>
+        <!-- Statistiques -->
+        <div class="alert alert-info mb-3">
+          <i class="bi bi-info-circle"></i>
+          Total clients trouvés : <strong>{{ listCustomers.length }}</strong>
+        </div>
+
+        <!-- Tableau des clients -->
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead class="table-dark">
+            <tr>
+              <th>ID</th>
+              <th>Nom</th>
+              <th>Email</th>
+              <th>Créé le</th>
+              <th class="text-center">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let c of listCustomers; trackBy: trackByCustomerId">
+              <td>{{ c.id }}</td>
+              <td>{{ c.name }}</td>
+              <td>{{ c.email }}</td>
+              <td>
+                <div class="d-flex gap-1 justify-content-center">
+                  <button (click)="handleEditCustomer(c)" class="btn btn-warning btn-sm" title="Modifier">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button (click)="handleCustomerAccounts(c)" class="btn btn-success btn-sm" title="Comptes">
+                    <i class="bi bi-bank"></i>
+                  </button>
+                  <button (click)="handleDeleteCustomer(c)" class="btn btn-danger btn-sm" title="Supprimer">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+
+          <div *ngIf="listCustomers.length === 0" class="text-center py-4">
+            <i class="bi bi-inbox display-4 text-muted"></i>
+            <p class="text-muted mt-2">Aucun client trouvé</p>
+          </div>
+        </div>
       </div>
     </div>
   </ng-container>
@@ -45,15 +74,18 @@
   <ng-template #failureOrLoading>
     <ng-container *ngIf="errorMessage; else loading">
       <div class="alert alert-danger">
-        {{errorMessage}}
+        <i class="bi bi-exclamation-triangle"></i>
+        {{ errorMessage }}
       </div>
     </ng-container>
-    <ng-template #loading>
-      <div class="text-center mt-5">
-        <div class="spinner-border" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
+  </ng-template>
+
+  <ng-template #loading>
+    <div class="text-center mt-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Chargement...</span>
       </div>
-    </ng-template>
+      <p class="mt-2 text-muted">Chargement des clients...</p>
+    </div>
   </ng-template>
 </div>
