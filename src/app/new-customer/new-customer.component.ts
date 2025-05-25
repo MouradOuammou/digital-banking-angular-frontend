@@ -15,6 +15,7 @@ import {CommonModule} from '@angular/common';
   styleUrls: ['./new-customer.component.css']
 })
 export class NewCustomerComponent implements OnInit {
+  customerId!: number | null;
   newCustomerFormGroup! : FormGroup;
   constructor(private fb : FormBuilder, private customerService:CustomerService, private router:Router) { }
 
@@ -37,5 +38,8 @@ export class NewCustomerComponent implements OnInit {
         console.log(err);
       }
     });
+  }
+  handleCancel(): void {
+    this.router.navigate(['/customers']);
   }
 }

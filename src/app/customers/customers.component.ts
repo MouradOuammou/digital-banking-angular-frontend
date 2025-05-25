@@ -1,13 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import { Router } from '@angular/router';
 import { CustomerService } from '../../service/customer.service';
 import { Customer } from '../../model/customer.model';
+import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-customers',
   templateUrl: './customers.component.html',
+  imports: [
+    ReactiveFormsModule,
+    NgIf,
+    AsyncPipe,
+    NgForOf
+  ],
   styleUrls: ['./customers.component.css']
 })
 export class CustomersComponent implements OnInit {
@@ -45,11 +52,11 @@ export class CustomersComponent implements OnInit {
   }
 
   handleNewCustomer() {
-    this.router.navigateByUrl("/new-customer");
+    this.router.navigateByUrl("/new-customer").then(() => console.log("Navigated to new customer page"));
   }
 
   handleEditCustomer(customer: Customer) {
-    this.router.navigateByUrl("/edit-customer/" + customer.id);
+    this.router.navigateByUrl("/edit-customer/" + customer.id).then(r => console.log(r));
   }
 
   handleDeleteCustomer(c: Customer) {
@@ -71,10 +78,10 @@ export class CustomersComponent implements OnInit {
   }
 
   handleCustomerAccounts(customer: Customer) {
-    this.router.navigateByUrl("/customer-accounts/" + customer.id, { state: customer });
+    this.router.navigateByUrl("/customer-accounts/" + customer.id, { state: customer }).then(r => console.log(r));
   }
 
-  trackByCustomerId(customer: Customer): number {
+  trackByCustomerId(_index: number , customer: Customer): number {
     return customer.id;
   }
 }

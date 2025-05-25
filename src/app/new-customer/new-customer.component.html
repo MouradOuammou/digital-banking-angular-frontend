@@ -1,6 +1,8 @@
 <div class="container">
   <div class="card col-md-6 offset-3 mt-2">
-    <div class="card-header">New Customer</div>
+    <div class="card-header">
+      {{ customerId ? 'Edit Customer' : 'New Customer' }}
+    </div>
     <div class="card-body">
       <form [formGroup]="newCustomerFormGroup" (ngSubmit)="handleSaveCustomer()">
         <div class="mb-3">
@@ -19,11 +21,28 @@
           <span class="text-danger"
                 *ngIf="newCustomerFormGroup.controls['email'].touched
                 && newCustomerFormGroup.controls['email'].errors
+                && newCustomerFormGroup.controls['email'].errors!['required']">
+            Email is Required
+          </span>
+          <span class="text-danger"
+                *ngIf="newCustomerFormGroup.controls['email'].touched
+                && newCustomerFormGroup.controls['email'].errors
                 && newCustomerFormGroup.controls['email'].errors!['email']">
             Email is not valid
           </span>
         </div>
-        <button [disabled]="!newCustomerFormGroup.valid" class="btn btn-info">Save</button>
+        <div class="mb-3">
+          <label class="form-label">Phone:</label>
+          <input type="text" formControlName="phone" class="form-control">
+        </div>
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary" (click)="handleCancel()">
+            Cancel
+          </button>
+          <button type="submit" [disabled]="!newCustomerFormGroup.valid" class="btn btn-info">
+            {{ customerId ? 'Update' : 'Save' }}
+          </button>
+        </div>
       </form>
     </div>
   </div>
