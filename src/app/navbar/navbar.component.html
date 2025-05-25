@@ -1,40 +1,33 @@
-<!-- navbar.component.html -->
-<nav class="navbar">
-  <div class="navbar-container">
-    <a class="navbar-brand">Navbar</a>
-
-    <button class="navbar-toggle" type="button" (click)="toggleNavbar()">
-      <span class="hamburger-line"></span>
-      <span class="hamburger-line"></span>
-      <span class="hamburger-line"></span>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" >Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
     </button>
-
-    <div class="navbar-menu" [class.active]="isNavbarOpen">
-      <ul class="navbar-nav">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active">Home</a>
+          <a class="nav-link active" aria-current="page" >Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/accounts">Accounts</a>
         </li>
-        <li class="nav-item dropdown" [class.open]="isDropdownOpen">
-          <a class="nav-link dropdown-toggle" (click)="toggleDropdown()">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Customers
-            <span class="dropdown-arrow"></span>
           </a>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" routerLink="/customers">Search customers</a></li>
             <li><a class="dropdown-item" routerLink="/new-customer">New customer</a></li>
           </ul>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled">Disabled</a>
+          <a class="nav-link disabled" href="" tabindex="-1" aria-disabled="true">Disabled</a>
         </li>
       </ul>
-
-      <form class="navbar-search">
-        <input class="search-input" type="search" placeholder="Search" aria-label="Search">
-        <button class="search-button" type="submit">Search</button>
+      <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
     </div>
   </div>
