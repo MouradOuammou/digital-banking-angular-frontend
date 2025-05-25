@@ -1,26 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import {catchError, map, Observable, of, throwError} from 'rxjs';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { catchError, map, Observable, of } from 'rxjs';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CustomerService } from '../../service/customer.service';
 import { Customer } from '../../model/customer.model';
-import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-
 
 @Component({
   selector: 'app-customers',
   templateUrl: './customers.component.html',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    CommonModule,
-    HttpClientModule
-  ],
   styleUrls: ['./customers.component.css']
 })
 export class CustomersComponent implements OnInit {
-  customers$!: Observable<Array<Customer>>;
+  customers$!: Observable<Customer[]>;
   errorMessage: string | null = null;
   searchFormGroup: FormGroup;
 
@@ -83,8 +74,7 @@ export class CustomersComponent implements OnInit {
     this.router.navigateByUrl("/customer-accounts/" + customer.id, { state: customer });
   }
 
-  // Optimisation pour le trackBy
-  trackByCustomerId(index: number, customer: Customer): number {
+  trackByCustomerId(customer: Customer): number {
     return customer.id;
   }
 }
