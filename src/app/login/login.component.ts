@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import {Router, RouterLink} from '@angular/router';
-import { NgClass } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
+import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { AuthService } from '../../service/auth.service';
 
 @Component({
@@ -10,7 +10,9 @@ import { AuthService } from '../../service/auth.service';
   imports: [
     NgClass,
     ReactiveFormsModule,
-    RouterLink
+    RouterLink,
+    CommonModule,
+    NgIf
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
@@ -26,9 +28,23 @@ export class LoginComponent {
     private router: Router
   ) {
     this.loginForm = this.fb.group({
-      username: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      username: ['', {
+        validators: [Validators.required, Validators.minLength(3  )],
+        updateOn: 'blur'
+      }],
+      password: ['', {
+        validators: [Validators.required, Validators.minLength(3)],
+        updateOn: 'blur'
+      }]
     });
+  }
+
+  get username() {
+    return this.loginForm.get('username');
+  }
+
+  get password() {
+    return this.loginForm.get('password');
   }
 
   onSubmit() {
@@ -37,11 +53,12 @@ export class LoginComponent {
       this.errorMessage = null;
 
       const { username, password } = this.loginForm.value;
+      console.log("test");
 
       this.authService.login(username, password).subscribe({
         next: (response) => {
           // Gérer la réponse de connexion réussie
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/customers']);
         },
         error: (error) => {
           this.errorMessage = 'Identifiants incorrects';
@@ -53,4 +70,5 @@ export class LoginComponent {
       });
     }
   }
+
 }

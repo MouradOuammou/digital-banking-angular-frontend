@@ -8,28 +8,32 @@
           </h3>
 
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
-            <!-- Email -->
+            <!-- Adresse e-mail -->
             <div class="mb-3">
               <label for="username" class="form-label fw-semibold">Adresse e-mail</label>
               <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+                <span class="input-group-text">
+                  <i class="bi bi-envelope-fill"></i>
+                </span>
                 <input
                   type="email"
                   id="username"
                   class="form-control"
-                  placeholder="nom@exemple.com"
                   formControlName="username"
+                  placeholder="nom@exemple.com"
                   [ngClass]="{
-                    'is-invalid': loginForm.get('username')?.invalid &&
-                                (loginForm.get('username')?.touched || loginForm.get('username')?.dirty)
+                    'is-invalid': username?.invalid && (username?.touched || username?.dirty)
                   }"
                 />
               </div>
-              <div class="invalid-feedback" *ngIf="loginForm.get('username')?.hasError('required')">
-                L'adresse e-mail est requise.
-              </div>
-              <div class="invalid-feedback" *ngIf="loginForm.get('username')?.hasError('email')">
-                Format de l'adresse e-mail invalide.
+              <div class="invalid-feedback"
+                   *ngIf="username?.invalid && (username?.touched || username?.dirty)">
+                <div *ngIf="username?.errors?.['required']">
+                  L'adresse e-mail est requise.
+                </div>
+                <div *ngIf="username?.errors?.['email']">
+                  Format de l'adresse e-mail invalide.
+                </div>
               </div>
             </div>
 
@@ -37,24 +41,28 @@
             <div class="mb-3">
               <label for="password" class="form-label fw-semibold">Mot de passe</label>
               <div class="input-group">
-                <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                <span class="input-group-text">
+                  <i class="bi bi-lock-fill"></i>
+                </span>
                 <input
                   type="password"
                   id="password"
                   class="form-control"
-                  placeholder="••••••••"
                   formControlName="password"
+                  placeholder="••••••••"
                   [ngClass]="{
-                    'is-invalid': loginForm.get('password')?.invalid &&
-                                (loginForm.get('password')?.touched || loginForm.get('password')?.dirty)
+                    'is-invalid': password?.invalid && (password?.touched || password?.dirty)
                   }"
                 />
               </div>
-              <div class="invalid-feedback" *ngIf="loginForm.get('password')?.hasError('required')">
-                Le mot de passe est requis.
-              </div>
-              <div class="invalid-feedback" *ngIf="loginForm.get('password')?.hasError('minlength')">
-                Minimum 6 caractères requis.
+              <div class="invalid-feedback"
+                   *ngIf="password?.invalid && (password?.touched || password?.dirty)">
+                <div *ngIf="password?.errors?.['required']">
+                  Le mot de passe est requis.
+                </div>
+                <div *ngIf="password?.errors?.['minlength']">
+                  Minimum 6 caractères requis.
+                </div>
               </div>
             </div>
 
@@ -66,10 +74,10 @@
             <!-- Bouton de connexion -->
             <div class="d-grid gap-2 mb-3 mt-4">
               <button
-                class="btn btn-primary fw-semibold"
                 type="submit"
+                class="btn btn-primary fw-semibold"
                 [disabled]="loginForm.invalid || isLoading"
-              > Connecter
+              >
                 <ng-container *ngIf="!isLoading">Se connecter</ng-container>
                 <ng-container *ngIf="isLoading">
                   <span class="spinner-border spinner-border-sm me-2" role="status"></span>
@@ -79,7 +87,7 @@
             </div>
           </form>
 
-          <!-- Lien de réinitialisation -->
+          <!-- Lien mot de passe oublié -->
           <div class="text-center mt-2">
             <a routerLink="/forgot-password" class="text-decoration-none small">
               <i class="bi bi-question-circle-fill me-1"></i> Mot de passe oublié ?

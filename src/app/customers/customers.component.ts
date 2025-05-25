@@ -14,7 +14,6 @@ import {AsyncPipe, DatePipe, NgForOf, NgIf} from '@angular/common';
     NgIf,
     AsyncPipe,
     NgForOf,
-    DatePipe
   ],
   styleUrls: ['./customers.component.css']
 })
